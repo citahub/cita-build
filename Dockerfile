@@ -22,7 +22,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-201
 
 ENV PATH $PATH:/root/.cargo/bin
 
-RUN cargo install --force --vers 0.2.17 rustfmt-nightly
+RUN cargo install --force --vers 0.3.0 rustfmt-nightly
 
 
 COPY solc /usr/bin/
