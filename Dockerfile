@@ -29,7 +29,7 @@ COPY solc /usr/bin/
 RUN chmod +x /usr/bin/solc
 
 RUN pip install -U pip
-RUN pip install ethereum==2.2.0 pysodium
+RUN pip install ethereum==2.2.0 pysodium toml
 
 
 COPY libgmssl.so.1.0.0 /usr/local/lib/
