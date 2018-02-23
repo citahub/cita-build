@@ -14,6 +14,19 @@ RUN apt-get update && apt-get install -y \
     libsodium* \
     libzmq3-dev \
     libssl-dev \
+    binutils-dev \
+    libcurl4-openssl-dev \
+    zlib1g-dev \
+    libdw-dev \
+    libiberty-dev \
+    cmake \
+    build-essential \
+ && curl -o v33.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v33.tar.gz \
+ && tar -xf v33.tar.gz && cd kcov-33 \
+ && mkdir build && cd build \
+ && cmake .. && make && make install \
+ && cd ../.. \
+ && rm -rf v33.tar.gz kcov-33 \
  && rm -rf /var/lib/apt/lists \
  && rm -rf ~/.cache/pip
 
