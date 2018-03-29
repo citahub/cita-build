@@ -42,7 +42,13 @@ COPY solc /usr/bin/
 RUN chmod +x /usr/bin/solc
 
 RUN pip install -U pip
-RUN pip install ethereum==2.2.0 PyYAML==3.12 jsonrpcclient==2.5.2 pysodium toml
+RUN pip install \
+    ethereum==2.2.0 \
+    PyYAML==3.12 \
+    jsonrpcclient==2.5.2 \
+    jsonschema==2.6.0 \
+    requests==2.18.4 \
+    pysodium toml
 
 
 COPY libgmssl.so.1.0.0 /usr/local/lib/
