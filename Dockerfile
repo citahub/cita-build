@@ -41,8 +41,8 @@ ENV PATH $PATH:/root/.cargo/bin
 
 RUN cargo install --force --vers 0.7.0 rustfmt-nightly
 
-RUN pip install -U pip
-RUN pip install pysodium toml
+RUN pip3 install -U pip
+RUN pip3 install pysodium toml
 RUN cd
 RUN git clone https://github.com/ethereum/pyethereum/
 RUN cd pyethereum
