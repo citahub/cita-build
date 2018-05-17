@@ -1,9 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y \
     pkg-config \
     rabbitmq-server \
-    python-pip \
+    python3-pip \
     curl \
     jq \
     google-perftools \
@@ -21,15 +21,19 @@ RUN apt-get update && apt-get install -y \
     libiberty-dev \
     cmake \
     build-essential \
- && curl -o v33.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v33.tar.gz \
- && tar -xf v33.tar.gz && cd kcov-33 \
+    automake \
+    libtool \
+    libffi-dev \
+    libgmp-dev \
+    libyaml-cpp-dev \
+ && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
+ && tar -xf v35.tar.gz && cd kcov-35 \
  && mkdir build && cd build \
  && cmake .. && make && make install \
  && cd ../.. \
- && rm -rf v33.tar.gz kcov-33 \
+ && rm -rf v35.tar.gz kcov-35 \
  && rm -rf /var/lib/apt/lists \
  && rm -rf ~/.cache/pip
-
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2017-12-05
 
@@ -37,19 +41,15 @@ ENV PATH $PATH:/root/.cargo/bin
 
 RUN cargo install --force --vers 0.3.0 rustfmt-nightly
 
+RUN pip install -U pip
+RUN pip install pysodium toml
+RUN cd
+RUN git clone https://github.com/ethereum/pyethereum/
+RUN cd pyethereum
+RUN python3 setup.py install
 
 COPY solc /usr/bin/
 RUN chmod +x /usr/bin/solc
-
-RUN pip install -U pip
-RUN pip install \
-    ethereum==2.2.0 \
-    PyYAML==3.12 \
-    jsonrpcclient==2.5.2 \
-    jsonschema==2.6.0 \
-    requests==2.18.4 \
-    pysodium toml
-
 
 COPY libgmssl.so.1.0.0 /usr/local/lib/
 RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
