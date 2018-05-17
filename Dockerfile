@@ -53,3 +53,5 @@ RUN chmod +x /usr/bin/solc
 COPY libgmssl.so.1.0.0 /usr/local/lib/
 RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
 RUN ldconfig
+
+WORKDIR /root
