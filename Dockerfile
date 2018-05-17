@@ -43,9 +43,8 @@ RUN cargo install --force --vers 0.7.0 rustfmt-nightly
 
 RUN pip3 install -U pip
 RUN pip3 install pysodium toml
-RUN cd
 RUN git clone https://github.com/ethereum/pyethereum/
-RUN cd pyethereum
+WORKDIR /pyethereum
 RUN python3 setup.py install
 
 COPY solc /usr/bin/
