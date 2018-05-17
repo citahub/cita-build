@@ -35,11 +35,11 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists \
  && rm -rf ~/.cache/pip
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2017-12-05
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-14
 
 ENV PATH $PATH:/root/.cargo/bin
 
-RUN cargo install --force --vers 0.3.0 rustfmt-nightly
+RUN cargo install --force --vers 0.7.0 rustfmt-nightly
 
 RUN pip install -U pip
 RUN pip install pysodium toml
