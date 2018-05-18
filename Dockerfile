@@ -1,6 +1,9 @@
 FROM ubuntu:18.04
 
+ENV HOME /opt
+
 RUN apt-get update && apt-get install -y \
+    sudo \
     pkg-config \
     rabbitmq-server \
     python3-pip \
@@ -37,7 +40,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-17
 
-ENV PATH $PATH:/root/.cargo/bin
+ENV PATH $PATH:$HOME/.cargo/bin
 
 RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-17
 RUN rustup self update
@@ -56,4 +59,12 @@ COPY libgmssl.so.1.0.0 /usr/local/lib/
 RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
 RUN ldconfig
 
-WORKDIR /root
+# Link: https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+COPY gosu /usr/bin/
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/gosu
+RUN chmod +x /usr/bin/entrypoint.sh
+
+WORKDIR /opt
+
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
