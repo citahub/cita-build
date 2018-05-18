@@ -46,6 +46,7 @@ RUN pip3 install -U pip
 RUN pip3 install pysodium toml
 RUN git clone https://github.com/ethereum/pyethereum/
 WORKDIR /pyethereum
+RUN git checkout 3d5ec14032cc471f4dcfc7cc5c947294daf85fe0
 RUN python3 setup.py install
 
 COPY solc /usr/bin/
