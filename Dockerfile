@@ -39,7 +39,8 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-201
 
 ENV PATH $PATH:/root/.cargo/bin
 
-RUN cargo install --force --vers 0.7.0 rustfmt-nightly
+RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-17
+RUN rustup self update
 
 RUN pip3 install -U pip
 RUN pip3 install pysodium toml
