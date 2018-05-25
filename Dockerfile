@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     libgmp-dev \
     libyaml-cpp-dev \
+    libsecp256k1-dev \
  && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
  && tar -xf v35.tar.gz && cd kcov-35 \
  && mkdir build && cd build \
@@ -38,15 +39,16 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists \
  && rm -rf ~/.cache/pip
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-17
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-23
 
 ENV PATH $PATH:$HOME/.cargo/bin
 
-RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-17
+RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-23
+
 RUN rustup self update
 
 RUN pip3 install -U pip
-RUN pip3 install pysodium toml
+RUN pip3 install pysodium toml jsonschema secp256k1 requests
 RUN git clone https://github.com/ethereum/pyethereum/
 WORKDIR /pyethereum
 RUN git checkout 3d5ec14032cc471f4dcfc7cc5c947294daf85fe0
