@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
 
-ENV HOME /opt
-
 RUN apt-get update && apt-get install -y \
     sudo \
     pkg-config \
@@ -39,9 +37,11 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists \
  && rm -rf ~/.cache/pip
 
+ENV CARGO_HOME=/opt/.cargo
+ENV RUSTUP_HOME=/opt/.rustup
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-23
 
-ENV PATH $PATH:$HOME/.cargo/bin
+ENV PATH $PATH:/opt/.cargo/bin
 
 RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-23
 
