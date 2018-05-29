@@ -48,7 +48,7 @@ RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-23
 RUN rustup self update
 
 RUN pip3 install -U pip
-RUN pip3 install pysodium toml jsonschema secp256k1 requests
+RUN pip3 install pysodium toml jsonschema secp256k1 jsonrpcclient[requests]==2.4.2
 RUN git clone https://github.com/ethereum/pyethereum/
 WORKDIR /pyethereum
 RUN git checkout 3d5ec14032cc471f4dcfc7cc5c947294daf85fe0
