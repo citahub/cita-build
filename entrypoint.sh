@@ -2,7 +2,7 @@
 
 if [ "${USER_ID}" = "0" ] || [ "${USER_ID}" = "" ]; then
     # Run with "root"
-    /bin/bash
+    exec "$@"
 else
     # Add local user(name=user) use USER_ID
     useradd --shell /bin/bash -u "${USER_ID}" -o -c "" -d /opt user
