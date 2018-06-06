@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     libgmp-dev \
     libyaml-cpp-dev \
     libsecp256k1-dev \
+    ca-certificates \
  && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
  && tar -xf v35.tar.gz && cd kcov-35 \
  && mkdir build && cd build \
@@ -71,9 +72,14 @@ RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
 RUN ldconfig
 
 # Link: https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
-COPY gosu /usr/bin/
+RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
+RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
+    && curl -o /usr/local/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture).asc" \
+    && gpg --verify /usr/local/bin/gosu.asc \
+    && rm /usr/local/bin/gosu.asc \
+    && chmod +x /usr/local/bin/gosu
+
 COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/gosu
 RUN chmod +x /usr/bin/entrypoint.sh
 
 WORKDIR /opt
