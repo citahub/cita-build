@@ -57,6 +57,7 @@ RUN pip3 install -U pip \
   simplejson==3.11.1 \
   pathlib==1.0.1 \
   pysha3>=1.0.2 \
+  bitcoin==1.1.42 \
   && pip3 install git+https://github.com/ethereum/pyethereum.git@3d5ec14032cc471f4dcfc7cc5c947294daf85fe0 \
   && rm -r ~/.cache/pip
 
