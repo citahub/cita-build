@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+LABEL maintainer="Cryptape Technologies <contact@cryptape.com>"
 
 RUN apt-get update && apt-get install -y \
     sudo \
@@ -61,8 +62,9 @@ RUN pip3 install -U pip \
   && pip3 install git+https://github.com/ethereum/pyethereum.git@3d5ec14032cc471f4dcfc7cc5c947294daf85fe0 \
   && rm -r ~/.cache/pip
 
-COPY solc /usr/bin/
-RUN chmod +x /usr/bin/solc
+RUN curl -o solc -L https://github.com/ethereum/solidity/releases/download/v0.4.24/solc-static-linux \
+  && mv solc /usr/bin/ \
+  && chmod +x /usr/bin/solc
 
 COPY libgmssl.so.1.0.0 /usr/local/lib/
 RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
