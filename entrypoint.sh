@@ -13,4 +13,3 @@ else
 
     exec /usr/bin/gosu user "$@"
 fi
-
