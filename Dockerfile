@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     libsnappy-dev \
     libgoogle-perftools-dev \
     libsodium* \
+    clang \
     libzmq3-dev \
     libssl-dev \
     binutils-dev \
