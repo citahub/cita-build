@@ -1,0 +1,11 @@
+sudo: true
+dist: trusty
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker build -t $DOCKER_USERNAME/docker-build:$TRAVIS_BRANCH-$TRAVIS_COMMIT .
+      - docker push $DOCKER_USERNAME/docker-build:$TRAVIS_BRANCH-$TRAVIS_COMMIT
+
