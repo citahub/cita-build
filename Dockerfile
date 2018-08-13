@@ -68,17 +68,31 @@ RUN curl -o solc -L https://github.com/ethereum/solidity/releases/download/v0.4.
   && mv solc /usr/bin/ \
   && chmod +x /usr/bin/solc
 
-COPY libgmssl.so.1.0.0 /usr/local/lib/
-RUN ln -srf /usr/local/lib/libgmssl.so.1.0.0 /usr/local/lib/libgmssl.so
-RUN ldconfig
-
-# Link: https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
-RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4
-RUN curl -o /usr/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
-    && curl -o /usr/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture).asc" \
-    && gpg --verify /usr/bin/gosu.asc \
-    && rm /usr/bin/gosu.asc \
-    && chmod +x /usr/bin/gosu
+# Ref:
+#   + https://github.com/tianon/gosu/blob/master/INSTALL.md
+#   + https://github.com/tianon/gosu/issues/39#issuecomment-362544059
+RUN set -ex; \
+    \
+    export GOSU_VERSION="1.10"; \
+    \
+    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
+    curl -o /usr/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
+    curl -o /usr/bin/gosu.asc -SL "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
+    \
+    export GNUPGHOME="$(mktemp -d)"; \
+    for server in $(shuf -e ha.pool.sks-keyservers.net \
+                            hkp://p80.pool.sks-keyservers.net:80 \
+                            keyserver.ubuntu.com \
+                            hkp://keyserver.ubuntu.com:80 \
+                            pgp.mit.edu) ; do \
+        gpg --keyserver "${server}" \
+            --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break || : ; \
+    done; \
+    gpg --batch --verify /usr/bin/gosu.asc /usr/bin/gosu; \
+    rm -rf "$GNUPGHOME" /usr/bin/gosu.asc; \
+    \
+    chmod +x /usr/bin/gosu; \
+    gosu nobody true;
 
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
