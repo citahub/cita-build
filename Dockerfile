@@ -42,15 +42,13 @@ RUN apt-get update && apt-get install -y \
  && apt-get clean \
  && apt-get autoclean
 
+ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
 ENV RUSTUP_HOME=/opt/.rustup
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-23
-
-ENV PATH $PATH:/opt/.cargo/bin
-
-RUN rustup component add rustfmt-preview --toolchain nightly-2018-05-23
-
-RUN rustup self update
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-05-23 \
+ && rustup component add rustfmt-preview --toolchain nightly-2018-05-23 \
+ && rustup self update \
+ && cargo install clippy --force --version 0.0.204
 
 RUN pip3 install -U pip \
   && hash pip3 \
