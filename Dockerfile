@@ -45,10 +45,10 @@ RUN apt-get update && apt-get install -y \
 ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
 ENV RUSTUP_HOME=/opt/.rustup
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain nightly-2018-10-05 \
- && rustup component add rustfmt-preview --toolchain nightly-2018-10-05 \
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable \
+ && rustup component add rustfmt --toolchain stable \
  && rustup self update \
- && rustup component add clippy-preview --toolchain nightly-2018-10-05
+ && rustup component add clippy --toolchain stable
 
 RUN pip3 install -U pip \
   && hash pip3 \
