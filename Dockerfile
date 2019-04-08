@@ -31,6 +31,8 @@ RUN apt-get update && apt-get install -y \
     libyaml-cpp-dev \
     libsecp256k1-dev \
     ca-certificates \
+    librocksdb5.8 \
+    librocksdb-dev \
  && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
  && tar -xf v35.tar.gz && cd kcov-35 \
  && mkdir build && cd build \
