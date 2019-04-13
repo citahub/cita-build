@@ -11,5 +11,5 @@ else
     # "user" can create file in .cargo and .cargo/bin
     chown user:user /opt/.cargo /opt/.cargo/bin
 
-    exec /usr/bin/gosu user "$@"
+    exec /usr/sbin/gosu user "$@"
 fi
