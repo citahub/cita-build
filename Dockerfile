@@ -43,9 +43,7 @@ RUN set -eux \
  && cd ../.. \
  && rm -rf v35.tar.gz kcov-35 \
  && rm -rf /var/lib/apt/lists \
- && apt-get autoremove \
- && apt-get clean \
- && apt-get autoclean
+ && apt-get clean
 
 ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
