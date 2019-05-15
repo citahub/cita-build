@@ -69,7 +69,6 @@ RUN curl -o solc -L https://github.com/ethereum/solidity/releases/download/v0.4.
   && mv solc /usr/bin/ \
   && chmod +x /usr/bin/solc
 
-
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
