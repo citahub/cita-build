@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL maintainer="Cryptape Technologies <contact@cryptape.com>"
+LABEL maintainer="Rivtower Technologies <contact@rivtower.com>"
 
 # Ref:
 #   + https://github.com/tianon/gosu/blob/master/INSTALL.md#from-debian
