@@ -3,7 +3,9 @@ LABEL maintainer="Rivtower Technologies <contact@rivtower.com>"
 
 # Ref:
 #   + https://github.com/tianon/gosu/blob/master/INSTALL.md#from-debian
+# change source
 RUN set -eux \
+ && sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list \
  && apt-get update && apt-get install -y \
     automake \
     binutils-dev \
@@ -16,6 +18,7 @@ RUN set -eux \
     google-perftools \
     gosu \
     jq \
+    wget \
     libcurl4-openssl-dev \
     libdw-dev \
     libffi-dev \
@@ -34,6 +37,9 @@ RUN set -eux \
     rabbitmq-server \
     sudo \
     zlib1g-dev \
+    libclang-dev \
+    llvm \
+    libc6-dev-i386 \
  # verify that the binary works
  && gosu nobody true \
  && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
@@ -48,10 +54,26 @@ RUN set -eux \
 ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
 ENV RUSTUP_HOME=/opt/.rustup
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable \
+RUN curl --proto '=https' https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable \
  && rustup component add rustfmt --toolchain stable \
  && rustup self update \
  && rustup component add clippy --toolchain stable
+
+#COPY gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu /opt/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/
+ENV PATH=/opt/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/bin:$PATH
+# rust change source
+RUN wget https://releases.linaro.org/components/toolchain/binaries/latest-5/aarch64-linux-gnu/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu.tar.xz \
+ && tar -xvf gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu.tar.xz \
+ && mv gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu /opt/ \
+ && rustup target add aarch64-unknown-linux-gnu \
+ && wget http://mirror.archlinuxarm.org/aarch64/extra/snappy-1.1.8-1-aarch64.pkg.tar.xz \
+ && tar Jxvf snappy-1.1.8-1-aarch64.pkg.tar.xz \
+ && cp usr/lib/libsnappy.so /opt/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu/aarch64-linux-gnu/lib64/
+
+
+COPY openssl /opt/openssl/
+ENV OPENSSL_LIB_DIR=/opt/openssl
+ENV OPENSSL_INCLUDE_DIR=/opt/openssl/include
 
 RUN pip3 install -U pip \
   && hash pip3 \
@@ -62,7 +84,6 @@ RUN pip3 install -U pip \
   pathlib==1.0.1 \
   pysha3>=1.0.2 \
   bitcoin==1.1.42 \
-  && pip3 install git+https://github.com/ethereum/pyethereum.git@3d5ec14032cc471f4dcfc7cc5c947294daf85fe0 \
   && rm -r ~/.cache/pip
 
 RUN curl -o solc -L https://github.com/ethereum/solidity/releases/download/v0.4.24/solc-static-linux \
