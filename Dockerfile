@@ -48,10 +48,7 @@ RUN set -eux \
 ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
 ENV RUSTUP_HOME=/opt/.rustup
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable \
- && rustup component add rustfmt --toolchain stable \
- && rustup self update \
- && rustup component add clippy --toolchain stable
+RUN curl --proto '=https' --tlsv1.2 -sSf  https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.46
 
 RUN pip3 install -U pip \
   && hash pip3 \
