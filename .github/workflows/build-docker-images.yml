@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - main
-      - 'v*'
+      - 'ubuntu-*'
 
 jobs:
   build:
