@@ -37,12 +37,6 @@ RUN set -eux \
     zlib1g-dev \
  # verify that the binary works
  && gosu nobody true \
- && curl -o v35.tar.gz -L https://github.com/SimonKagstrom/kcov/archive/v35.tar.gz \
- && tar -xf v35.tar.gz && cd kcov-35 \
- && mkdir build && cd build \
- && cmake .. && make && make install \
- && cd ../.. \
- && rm -rf v35.tar.gz kcov-35 \
  && rm -rf /var/lib/apt/lists \
  && apt-get clean
 
