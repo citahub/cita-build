@@ -1,6 +1,7 @@
 FROM ubuntu:20.04
 LABEL maintainer="Rivtower Technologies <contact@rivtower.com>"
 
+ENV DEBIAN_FRONTEND=noninteractive
 # Ref:
 #   + https://github.com/tianon/gosu/blob/master/INSTALL.md#from-debian
 RUN set -eux \
