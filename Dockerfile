@@ -43,7 +43,7 @@ RUN set -eux \
 ENV PATH $PATH:/opt/.cargo/bin
 ENV CARGO_HOME=/opt/.cargo
 ENV RUSTUP_HOME=/opt/.rustup
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.58.0
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.74.0
 
 RUN pip3 install -U pip \
   && hash pip3 \
